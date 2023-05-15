@@ -1,5 +1,122 @@
-const AddressForm = () => {
-  return <div>AddressForm</div>
+import { getIn } from 'formik'
+import { Box, useMediaQuery, TextField } from '@mui/material'
+
+const AddressForm = ({
+  type,
+  values,
+  errors,
+  touched,
+  handleBlur,
+  handleChange
+}) => {
+  const isNonMobile = useMediaQuery('(min-width:600px)')
+
+  //these funtions allow for better code readability
+  const formattedName = (field) => `${type}.${field}`
+  const formattedError = (field) =>
+    Boolean(
+      getIn(touched, formattedName(field)) &&
+        getIn(errors, formattedName(field))
+    )
+
+  const formattedHelper = (field) =>
+    getIn(touched, formattedName(field)) && getIn(errors, formattedName(field))
+
+  return (
+    <Box
+      display="grid"
+      gap="15px"
+      gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+      sx={{
+        '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' }
+      }}
+    >
+      <TextField
+        fullWidth
+        type="text"
+        label="First Name"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.firstName}
+        name={formattedName('firstName')}
+        error={formattedError('firstName')}
+        helperText={formattedHelper('firstName')}
+        sx={{ gridColumn: 'span 2' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="Last Name"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.lastName}
+        name={formattedName('lastName')}
+        error={formattedError('lastName')}
+        helperText={formattedHelper('lastName')}
+        sx={{ gridColumn: 'span 2' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="Street Address"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.street}
+        name={formattedName('street')}
+        error={formattedError('street')}
+        helperText={formattedHelper('street')}
+        sx={{ gridColumn: 'span 3' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="Building Number"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.buildingNumber}
+        name={formattedName('buildingNumber')}
+        error={formattedError('buildingNumber')}
+        helperText={formattedHelper('buildingNumber')}
+        sx={{ gridColumn: 'span 1fr' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="City"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.city}
+        name={formattedName('city')}
+        error={formattedError('city')}
+        helperText={formattedHelper('city')}
+        sx={{ gridColumn: 'span 2' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="Zip Code"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.zipCode}
+        name={formattedName('zipCode')}
+        error={formattedError('zipCode')}
+        helperText={formattedHelper('zipCode')}
+        sx={{ gridColumn: 'span 2' }}
+      />
+      <TextField
+        fullWidth
+        type="text"
+        label="Country"
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={values.country}
+        name={formattedName('country')}
+        error={formattedError('country')}
+        helperText={formattedHelper('country')}
+        sx={{ gridColumn: 'span 4' }}
+      />
+    </Box>
+  )
 }
 
 export default AddressForm

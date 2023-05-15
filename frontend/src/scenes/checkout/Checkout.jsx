@@ -4,27 +4,28 @@ import { Formik } from 'formik'
 import { useState } from 'react'
 import * as yup from 'yup'
 import Shipping from './Shipping'
-import shades from '../../theme'
+import Payment from './Payment'
+import { shades } from '../../theme'
 
 const initialValues = {
   billingAddress: {
     firstName: '',
     lastName: '',
-    country: '',
-    street1: '',
+    street: '',
     buildingNumber: '',
     city: '',
-    zipCode: ''
+    zipCode: '',
+    country: ''
   },
   shippingAddress: {
     isSameAddress: true,
     firstName: '',
     lastName: '',
-    country: '',
-    street1: '',
+    street: '',
     buildingNumber: '',
     city: '',
-    zipCode: ''
+    zipCode: '',
+    country: ''
   },
   email: '',
   phoneNumber: ''
@@ -35,11 +36,11 @@ const checkoutSchema = [
     billingAddress: yup.object().shape({
       firstName: yup.string().required('required'),
       lastName: yup.string().required('required'),
-      country: yup.string().required('required'),
-      street1: yup.string().required('required'),
+      street: yup.string().required('required'),
       buildingNumber: yup.string().required('required'),
       city: yup.string().required('required'),
-      zipCode: yup.string().required('required')
+      zipCode: yup.string().required('required'),
+      country: yup.string().required('required')
     }),
     shippingAddress: yup.object().shape({
       isSameAddress: yup.boolean(),
@@ -51,11 +52,7 @@ const checkoutSchema = [
         is: false,
         then: yup.string().required('required')
       }),
-      country: yup.string().when('isSameAddress', {
-        is: false,
-        then: yup.string().required('required')
-      }),
-      street1: yup.string().when('isSameAddress', {
+      street: yup.string().when('isSameAddress', {
         is: false,
         then: yup.string().required('required')
       }),
@@ -68,6 +65,10 @@ const checkoutSchema = [
         then: yup.string().required('required')
       }),
       zipCode: yup.string().when('isSameAddress', {
+        is: false,
+        then: yup.string().required('required')
+      }),
+      country: yup.string().when('isSameAddress', {
         is: false,
         then: yup.string().required('required')
       })
@@ -86,8 +87,22 @@ const Checkout = () => {
   const isFirstStep = activeStep === 0
   const isSecondStep = activeStep === 1
 
-  const handleFormSubmit = async (value, actions) => {
+  const handleFormSubmit = async (values, actions) => {
     setActiveStep(activeStep + 1)
+
+    //copies the billing address onto shipping address
+    if (isFirstStep && values.shippingAddress.isSameAddress) {
+      actions.setFieldValue('shippingAddress', {
+        ...values.billingAddress,
+        isSameAddress: true
+      })
+    }
+
+    if (isSecondStep) {
+      makePayment(values)
+    }
+
+    actions.setThouched({})
   }
 
   async function makePayment(values) {}
@@ -128,6 +143,51 @@ const Checkout = () => {
                   setFieldValue={setFieldValue}
                 />
               )}
+              {isSecondStep && (
+                <Payment
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                />
+              )}
+              <Box display="flex" justifyContent="space-between" gap="50px">
+                {isSecondStep && (
+                  <Button
+                    fullWidth
+                    color="primary"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: shades.primary[200],
+                      boxShadow: 'none',
+                      color: 'white',
+                      borderRadius: 0,
+                      padding: '15px 40px'
+                    }}
+                    onClick={() => setActiveStep(activeStep - 1)}
+                  >
+                    Back
+                  </Button>
+                )}
+                <Button
+                  fullWidth
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: shades.primary[400],
+                    boxShadow: 'none',
+                    color: 'white',
+                    borderRadius: 0,
+                    padding: '15px 40px'
+                  }}
+                  onClick={() => setActiveStep(activeStep + 1)}
+                >
+                  {!isSecondStep ? 'Next' : 'Place Order'}
+                </Button>
+              </Box>
             </form>
           )}
         </Formik>
