@@ -6,6 +6,11 @@ import * as yup from 'yup'
 import Shipping from './Shipping'
 import Payment from './Payment'
 import { shades } from '../../theme'
+import { loadStripe } from '@stripe/stripe-js'
+
+const stripePromise = loadStripe(
+  'pk_test_51N81Z0CtShirwDcZ6bqLaJCimWN9CmHc6NeNTL6XhAj6iOO9tXAn6qtEkC9nEjGai13MFUZqC9dpTUrZGPyS1sld00kEJKL8AZ'
+)
 
 const initialValues = {
   billingAddress: {
@@ -102,10 +107,31 @@ const Checkout = () => {
       makePayment(values)
     }
 
-    actions.setThouched({})
+    actions.setTouched({})
   }
 
-  async function makePayment(values) {}
+  async function makePayment(values) {
+    console.log('values', values)
+    const stripe = await stripePromise
+    const requestBody = {
+      userName: [values.firstName, values.lastName].join(' '),
+      email: values.email,
+      products: cart.map(({ id, count }) => ({
+        id,
+        count
+      }))
+    }
+
+    const response = await fetch('http://localhost:1337/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    })
+    const session = await response.json()
+    await stripe.redirectToCheckout({
+      sessionId: session.id
+    })
+  }
 
   return (
     <Box width="80%" m="100px auto">
@@ -183,7 +209,6 @@ const Checkout = () => {
                     borderRadius: 0,
                     padding: '15px 40px'
                   }}
-                  onClick={() => setActiveStep(activeStep + 1)}
                 >
                   {!isSecondStep ? 'Next' : 'Place Order'}
                 </Button>
