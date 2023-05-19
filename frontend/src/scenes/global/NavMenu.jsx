@@ -1,11 +1,18 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { setIsMenuOpen } from '../../state'
+import { useNavigate } from 'react-router-dom'
 
 const NavMenu = () => {
+  const navigate = useNavigate()
   const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
+  const bestSellers = useSelector((state) => state.cart.items).slice(0, 3)
   const dispatch = useDispatch()
+
+  const {
+    palette: { secondary }
+  } = useTheme()
 
   return (
     <Box
@@ -24,18 +31,39 @@ const NavMenu = () => {
       onMouseOver={() => dispatch(setIsMenuOpen(true))}
       onMouseOut={() => dispatch(setIsMenuOpen(false))}
     >
-      <Box
-        //display={isHovered ? 'flex block' : 'none'}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p="20px"
-        height="350px"
-      >
-        <Box>NavMenu with products</Box>
-        <Box>NavMenu with products</Box>
-        <Box>NavMenu with products</Box>
-        <Box>NavMenu with products</Box>
+      <Box display="flex" height="auto" sx={{ cursor: 'pointer' }}>
+        {bestSellers.map((item) => {
+          return (
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+              alignItems="center"
+              p="30px 0"
+              onClick={() => {
+                dispatch(setIsMenuOpen(false))
+                navigate(`item/${item.id}`)
+              }}
+            >
+              <img
+                src={`http://localhost:1337${item.attributes.image.data.attributes.formats.medium.url}`}
+                width="80%"
+                height="auto"
+              />
+              <Typography
+                mt="10px"
+                variant="h4"
+                fontWeight="bold"
+                sx={{ '&:hover': { color: secondary.main } }}
+              >
+                {item.attributes.name}
+              </Typography>
+              <Typography fontSize="14px" width="80%" textAlign="center">
+                {item.attributes.sellingPoint}
+              </Typography>
+            </Box>
+          )
+        })}
       </Box>
       <Box
         backgroundColor="neutral.main"

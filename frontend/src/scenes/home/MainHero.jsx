@@ -63,7 +63,7 @@ const MainHero = () => {
             m: '10px 0'
           }}
           onClick={() => {
-            navigate('/items')
+            navigate('/collection')
           }}
         >
           Shop Some Stuff

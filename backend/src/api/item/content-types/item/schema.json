@@ -45,6 +45,9 @@
         "videos",
         "audios"
       ]
+    },
+    "sellingPoint": {
+      "type": "string"
     }
   }
 }

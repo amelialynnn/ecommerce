@@ -48,6 +48,10 @@ const Navbar = () => {
         </Box>
         <Box
           onMouseOver={() => dispatch(setIsMenuOpen(true))}
+          onClick={() => {
+            navigate('/collection')
+            dispatch(setIsMenuOpen(false))
+          }}
           component="nav"
           display="flex"
           alignItems="center"
@@ -91,7 +95,5 @@ const Navbar = () => {
     </Box>
   )
 }
-
-//gör nav på mitt sätt
 
 export default Navbar

@@ -10,6 +10,7 @@ import {
 // page & layout imports
 import Home from './scenes/home/Home'
 import ItemDetails from './scenes/itemDetails/ItemDetails'
+import ItemsCollection from './scenes/collection/ItemsCollection'
 import Checkout from './scenes/checkout/Checkout'
 import Confirmation from './scenes/checkout/Confirmation'
 import Navbar from './scenes/global/Navbar'
@@ -41,7 +42,6 @@ const MainLayout = () => (
 
 const SuccessLayout = () => (
   <>
-    <Navbar />
     <main>
       <Outlet />
     </main>
@@ -58,6 +58,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />}></Route>
             <Route path="item/:itemId" element={<ItemDetails />}></Route>
+            <Route path="collection" element={<ItemsCollection />}></Route>
           </Route>
           <Route path="checkout" element={<Checkout />}></Route>
           <Route element={<SuccessLayout />}>
