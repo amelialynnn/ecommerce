@@ -39,6 +39,16 @@ const MainLayout = () => (
   </>
 )
 
+const SuccessLayout = () => (
+  <>
+    <Navbar />
+    <main>
+      <Outlet />
+    </main>
+    <Footer />
+  </>
+)
+
 function App() {
   return (
     <div className="app">
@@ -50,7 +60,9 @@ function App() {
             <Route path="item/:itemId" element={<ItemDetails />}></Route>
           </Route>
           <Route path="checkout" element={<Checkout />}></Route>
-          <Route path="checkout/success" element={<Confirmation />}></Route>
+          <Route element={<SuccessLayout />}>
+            <Route path="checkout/success" element={<Confirmation />}></Route>
+          </Route>
         </Routes>
         <CartMenu />
         <NavMenu />

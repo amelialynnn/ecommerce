@@ -10,8 +10,6 @@ const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   async create(ctx) {
-    console.log(ctx.request.body);
-
     const { products, userName, email } = ctx.request.body;
 
     try {

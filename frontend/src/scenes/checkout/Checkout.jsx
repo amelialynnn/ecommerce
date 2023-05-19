@@ -111,10 +111,12 @@ const Checkout = () => {
   }
 
   async function makePayment(values) {
-    console.log('values', values)
     const stripe = await stripePromise
     const requestBody = {
-      userName: [values.firstName, values.lastName].join(' '),
+      userName: [
+        values.shippingAddress.firstName,
+        values.shippingAddress.lastName
+      ].join(' '),
       email: values.email,
       products: cart.map(({ id, count }) => ({
         id,
