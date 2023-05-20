@@ -14,7 +14,7 @@ const Item = ({ item, width }) => {
   const dispatch = useDispatch()
 
   const {
-    palette: { secondary }
+    palette: { neutral }
   } = useTheme()
 
   const [count, setCount] = useState(1)
@@ -76,7 +76,7 @@ const Item = ({ item, width }) => {
                 dispatch(addToCart({ item: { ...item, count } }))
               }}
               sx={{
-                backgroundColor: secondary.main,
+                backgroundColor: neutral.main,
                 color: shades.primary[500],
                 '&:hover': { backgroundColor: '#8ACB88' }
               }}

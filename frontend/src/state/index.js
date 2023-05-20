@@ -68,7 +68,20 @@ export const menuSlice = createSlice({
 
 export const { setIsMenuOpen } = menuSlice.actions
 
+export const userSlice = createSlice({
+  name: 'user',
+  initialState: { isUserModalOpen: false },
+  reducers: {
+    setIsUserModalOpen: (state) => {
+      state.isUserModalOpen = !state.isUserModalOpen
+    }
+  }
+})
+
+export const { setIsUserModalOpen } = userSlice.actions
+
 export default combineReducers({
   cart: cartSlice.reducer,
-  menu: menuSlice.reducer
+  menu: menuSlice.reducer,
+  user: userSlice.reducer
 })

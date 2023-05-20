@@ -9,7 +9,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { shades } from '../../theme'
-import { setIsCartOpen, setIsMenuOpen } from '../../state'
+import { setIsCartOpen, setIsMenuOpen, setIsUserModalOpen } from '../../state'
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -65,7 +65,10 @@ const Navbar = () => {
           )}
         </Box>
         <Box display="flex" justifyContent="space-between" columnGap="5px">
-          <IconButton sx={{ color: 'primary.main' }}>
+          <IconButton
+            onClick={() => dispatch(setIsUserModalOpen({}))}
+            sx={{ color: 'primary.main' }}
+          >
             <Person />
           </IconButton>
           <Badge

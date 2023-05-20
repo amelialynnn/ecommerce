@@ -17,6 +17,7 @@ import Navbar from './scenes/global/Navbar'
 import Infobar from './scenes/global/Infobar'
 import CartMenu from './scenes/global/CartMenu'
 import NavMenu from './scenes/global/NavMenu'
+import UserModal from './scenes/user/UserModal'
 import Footer from './scenes/global/Footer'
 
 const ScrollToTop = () => {
@@ -67,6 +68,7 @@ function App() {
         </Routes>
         <CartMenu />
         <NavMenu />
+        <UserModal />
       </BrowserRouter>
     </div>
   )

@@ -44,9 +44,11 @@ const NavMenu = () => {
                 dispatch(setIsMenuOpen(false))
                 navigate(`item/${item.id}`)
               }}
+              key={`${item.attributes.name}-${item.id}`}
             >
               <img
                 src={`http://localhost:1337${item.attributes.image.data.attributes.formats.medium.url}`}
+                alt={item.attributes.name}
                 width="80%"
                 height="auto"
               />
