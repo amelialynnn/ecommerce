@@ -1,30 +1,136 @@
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Modal, Box, Typography, Tabs, Tab, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import { setIsUserModalOpen } from '../../state'
+import { useNavigate } from 'react-router-dom'
+import { Formik } from 'formik'
+import * as yup from 'yup'
+import { setIsUserModalOpen, setUser } from '../../state'
+import { API } from '../../constant'
+import { setToken, setLoggedIn } from '../../helpers'
 import SignUp from './SignUp'
-import LogIn from './LogIn'
+import SignIn from './SignIn'
+import {
+  Modal,
+  Box,
+  Button,
+  Typography,
+  Tabs,
+  Tab,
+  IconButton
+} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+
+const initialValues = {
+  signIn: {
+    email: '',
+    password: ''
+  },
+  signUp: {
+    username: '',
+    email: '',
+    password: ''
+  }
+}
+
+const checkoutSchema = [
+  yup.object().shape({
+    signIn: yup.object().shape({
+      email: yup.string().required('required'),
+      password: yup.string().required('required')
+    })
+  }),
+  yup.object().shape({
+    signUp: yup.object().shape({
+      username: yup.string().required('required'),
+      email: yup.string().required('required'),
+      password: yup.string().required('required')
+    })
+  })
+]
 
 const UserModal = () => {
-  const [value, setValue] = useState('login')
-
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [value, setValue] = useState('signin')
+  const [error, setError] = useState('')
+  const [activeForm, setActiveForm] = useState(0)
+
+  const isSignInForm = activeForm === 0
+  const isSignUpForm = activeForm === 1
+
   const isUserModalOpen = useSelector((state) => state.user.isUserModalOpen)
 
-  //Behövs?
-  const handleClose = () => {}
-
-  const handleChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
     setValue(newValue)
+
+    if (activeForm === 0) {
+      setActiveForm(1)
+    } else {
+      setActiveForm(0)
+    }
   }
+
+  const handleFormSubmit = async (values, { resetForm }) => {
+    if (isSignInForm) {
+      console.log('SignIn values', values.signIn)
+      signIn(values)
+    } else if (isSignUpForm) {
+      console.log('SignUp values', values.signUp)
+      signUp(values)
+    }
+    resetForm()
+  }
+
+  //SIGN IN
+  const signIn = async (values) => {
+    try {
+      const requestSignIn = {
+        identifier: values.signIn.email,
+        password: values.signIn.password
+      }
+
+      const response = await fetch(`${API}/auth/local`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestSignIn)
+      })
+
+      const data = await response.json()
+      console.log(data)
+
+      if (data?.error) {
+        throw data?.error
+      } else {
+        //set the token
+        setToken(data.jwt)
+
+        //set as logged in
+        setLoggedIn(true)
+
+        //set the user
+        dispatch(setUser(data.user))
+
+        //close user modal
+        dispatch(setIsUserModalOpen(false))
+
+        navigate('/profile', { replace: true })
+      }
+    } catch (error) {
+      console.error(error)
+      setError(error?.message ?? 'Something went wrong!')
+    }
+  }
+
+  //SIGN UP
+  const signUp = async (values) => {}
 
   return (
     <>
       <Modal
         open={isUserModalOpen}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         position="relative"
@@ -46,28 +152,67 @@ const UserModal = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Tabs value={value} onChange={handleChange}>
-              <Tab label="LOG IN" value="login" />
+            <Tabs value={value} onChange={handleTabChange}>
+              <Tab label="SIGN IN" value="signin" />
               <Tab label="SIGN UP" value="signup" />
             </Tabs>
             <IconButton
-              onClick={() => dispatch(setIsUserModalOpen({}))}
+              onClick={() => dispatch(setIsUserModalOpen(false))}
               sx={{ color: 'primary.main', m: '0 20px' }}
             >
               <CloseIcon />
             </IconButton>
           </Box>
-          {value === 'login' && <LogIn />}
-          {value === 'signup' && <SignUp />}
+          <Formik
+            onSubmit={handleFormSubmit}
+            initialValues={initialValues}
+            validationSchema={checkoutSchema[activeForm]}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              setFieldValue
+            }) => (
+              <form onSubmit={handleSubmit}>
+                {value === 'signin' && (
+                  <SignIn
+                    type="signIn"
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+                {value === 'signup' && (
+                  <SignUp
+                    type="signUp"
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+              </form>
+            )}
+          </Formik>
         </Box>
       </Modal>
 
       {/* IF LOGGED IN - DASHBOARD */}
 
       {/* TODO:
-        - Val att signa upp
-        - Val att logga in
-        - Om inloggad - visa Dashboard sida
+        - logga in 1. success 2. fail
+        - signa upp 1. success 2. fail
+        - Om inloggad - visa Profile sida
+        - Logga ut
       */}
     </>
   )

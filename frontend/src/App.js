@@ -17,6 +17,7 @@ import Navbar from './scenes/global/Navbar'
 import Infobar from './scenes/global/Infobar'
 import CartMenu from './scenes/global/CartMenu'
 import NavMenu from './scenes/global/NavMenu'
+import Profile from './scenes/user/Profile'
 import UserModal from './scenes/user/UserModal'
 import Footer from './scenes/global/Footer'
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="item/:itemId" element={<ItemDetails />}></Route>
             <Route path="collection" element={<ItemsCollection />}></Route>
+            <Route path="profile" element={<Profile />}></Route>
           </Route>
           <Route path="checkout" element={<Checkout />}></Route>
           <Route element={<SuccessLayout />}>

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 const NavMenu = () => {
   const navigate = useNavigate()
   const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
-  const bestSellers = useSelector((state) => state.cart.items).slice(0, 3)
+  const bestSellers = useSelector((state) => state.cart.items)?.slice(0, 3)
   const dispatch = useDispatch()
 
   const {
@@ -32,7 +32,7 @@ const NavMenu = () => {
       onMouseOut={() => dispatch(setIsMenuOpen(false))}
     >
       <Box display="flex" height="auto" sx={{ cursor: 'pointer' }}>
-        {bestSellers.map((item) => {
+        {bestSellers?.map((item) => {
           return (
             <Box
               display="flex"

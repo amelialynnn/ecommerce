@@ -10,12 +10,23 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { shades } from '../../theme'
 import { setIsCartOpen, setIsMenuOpen, setIsUserModalOpen } from '../../state'
+import { getIsLoggedIn } from '../../helpers'
 
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const cart = useSelector((state) => state.cart.cart)
   const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
+
+  const handleUser = () => {
+    const isLoggedIn = getIsLoggedIn()
+
+    if (isLoggedIn) {
+      navigate('/profile')
+    } else {
+      dispatch(setIsUserModalOpen(true))
+    }
+  }
 
   return (
     <Box
@@ -65,10 +76,7 @@ const Navbar = () => {
           )}
         </Box>
         <Box display="flex" justifyContent="space-between" columnGap="5px">
-          <IconButton
-            onClick={() => dispatch(setIsUserModalOpen({}))}
-            sx={{ color: 'primary.main' }}
-          >
+          <IconButton onClick={handleUser} sx={{ color: 'primary.main' }}>
             <Person />
           </IconButton>
           <Badge

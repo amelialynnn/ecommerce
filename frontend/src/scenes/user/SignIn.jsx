@@ -1,7 +1,7 @@
 import { getIn } from 'formik'
-import { Box, Typography, TextField, Button } from '@mui/material'
+import { Box, Typography, Button, TextField } from '@mui/material'
 
-const SignUp = ({
+const SignIn = ({
   type,
   values,
   errors,
@@ -19,24 +19,11 @@ const SignUp = ({
 
   const formattedHelper = (field) =>
     getIn(touched, formattedName(field)) && getIn(errors, formattedName(field))
-
   return (
     <Box m="20px">
-      <Typography id="modal-modal-title" variant="h6" component="h2" mb="15px">
-        Sign up
+      <Typography id="modal-modal-title" variant="h6" component="h2" mb="10px">
+        Sign in
       </Typography>
-      <TextField
-        fullWidth
-        type="text"
-        label="Username"
-        onBlur={handleBlur}
-        onChange={handleChange}
-        value={values.username}
-        name={formattedName('username')}
-        error={formattedError('username')}
-        helperText={formattedHelper('username')}
-        sx={{ marginBottom: '15px' }}
-      />
       <TextField
         fullWidth
         type="text"
@@ -52,7 +39,7 @@ const SignUp = ({
       <TextField
         fullWidth
         type="password"
-        label="Enter password"
+        label="Enter Password"
         onBlur={handleBlur}
         onChange={handleChange}
         value={values.password}
@@ -61,24 +48,22 @@ const SignUp = ({
         helperText={formattedHelper('password')}
         sx={{ marginBottom: '15px' }}
       />
-      {
-        <Button
-          type="submit"
-          variant="btnPrimary"
-          color="secondary"
-          sx={{
-            minWidth: '100%',
-            padding: '20px 40px',
-            mb: '15px'
-          }}
-          onClick={() => {
-            //navigate('/checkout')
-            //dispatch(setIsCartOpen({}))
-          }}
-        >
-          Sign up
-        </Button>
-      }
+      <Button
+        type="submit"
+        variant="btnPrimary"
+        color="secondary"
+        sx={{
+          minWidth: '100%',
+          padding: '20px 40px',
+          mb: '15px'
+        }}
+        onClick={() => {
+          //navigate('/checkout')
+          //dispatch(setIsCartOpen({}))
+        }}
+      >
+        Sign in
+      </Button>
       <Typography
         id="modal-modal-description"
         sx={{ textAlign: 'center', fontSize: '12px', mb: '15px' }}
@@ -88,10 +73,10 @@ const SignUp = ({
         policy.
       </Typography>
       <Typography sx={{ textAlign: 'center' }}>
-        Already have an account? Sign in
+        Don't have an account? Sign up
       </Typography>
     </Box>
   )
 }
 
-export default SignUp
+export default SignIn

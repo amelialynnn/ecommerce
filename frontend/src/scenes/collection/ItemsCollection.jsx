@@ -19,7 +19,7 @@ const ItemsCollection = () => {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {items.map((item) => (
+        {items?.map((item) => (
           <Box>
             <Item
               item={item}

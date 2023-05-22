@@ -72,16 +72,31 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: { isUserModalOpen: false },
   reducers: {
-    setIsUserModalOpen: (state) => {
-      state.isUserModalOpen = !state.isUserModalOpen
+    setIsUserModalOpen: (state, action) => {
+      state.isUserModalOpen = action.payload
     }
   }
 })
 
 export const { setIsUserModalOpen } = userSlice.actions
 
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    user: undefined
+  },
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload
+    }
+  }
+})
+
+export const { setUser } = authSlice.actions
+
 export default combineReducers({
   cart: cartSlice.reducer,
   menu: menuSlice.reducer,
-  user: userSlice.reducer
+  user: userSlice.reducer,
+  auth: authSlice.reducer
 })

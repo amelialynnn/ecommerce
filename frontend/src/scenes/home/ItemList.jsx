@@ -45,7 +45,7 @@ const ItemList = () => {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {items.map((item) => (
+        {items?.map((item) => (
           <Item item={item} key={`${item.attributes.name}-${item.id}`} />
         ))}
       </Box>
