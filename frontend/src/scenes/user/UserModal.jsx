@@ -9,15 +9,7 @@ import { API } from '../../constant'
 import { setToken, setLoggedIn } from '../../helpers'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
-import {
-  Modal,
-  Box,
-  Button,
-  Typography,
-  Tabs,
-  Tab,
-  IconButton
-} from '@mui/material'
+import { Modal, Box, Tabs, Tab, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
 const initialValues = {
@@ -53,7 +45,8 @@ const UserModal = () => {
   const navigate = useNavigate()
 
   const [value, setValue] = useState('signin')
-  const [error, setError] = useState('')
+  const [errorSignIn, setErrorSignIn] = useState('')
+  const [errorSignUp, setErrorSignUp] = useState('')
   const [activeForm, setActiveForm] = useState(0)
 
   const isSignInForm = activeForm === 0
@@ -62,11 +55,12 @@ const UserModal = () => {
   const isUserModalOpen = useSelector((state) => state.user.isUserModalOpen)
 
   useEffect(() => {
-    //reset error message when user modal is closed
+    //reset errorSignIn and errorSignUp message when user modal is closed
     if (!isUserModalOpen) {
-      setError('')
+      setErrorSignIn('')
+      setErrorSignUp('')
     }
-  })
+  }, [isUserModalOpen])
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue)
@@ -82,7 +76,6 @@ const UserModal = () => {
     if (isSignInForm) {
       signIn(values)
     } else if (isSignUpForm) {
-      console.log('SignUp values', values.signUp)
       signUp(values)
     }
   }
@@ -104,7 +97,6 @@ const UserModal = () => {
       })
 
       const data = await response.json()
-      console.log(data)
 
       if (data?.error) {
         throw data?.error
@@ -123,105 +115,127 @@ const UserModal = () => {
       }
     } catch (error) {
       console.error(error)
-      setError(error?.message ?? 'Something went wrong!')
+      setErrorSignIn(error?.message ?? 'Something went wrong!')
     }
   }
 
   //SIGN UP
-  const signUp = async (values) => {}
+  const signUp = async (values) => {
+    try {
+      const requestSignUp = {
+        username: values.signUp.username,
+        email: values.signUp.email,
+        password: values.signUp.password
+      }
+
+      const response = await fetch(`${API}/auth/local/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestSignUp)
+      })
+
+      const data = await response.json()
+
+      if (data?.error) {
+        throw data?.error
+      } else {
+        //local storage
+        setToken(data.jwt)
+        setLoggedIn(true)
+
+        //set the user in redux store
+        dispatch(setUser(data.user))
+
+        //close user modal
+        dispatch(setIsUserModalOpen(false))
+
+        navigate('/profile', { replace: true })
+      }
+    } catch (error) {
+      console.error(error)
+      setErrorSignUp(error?.message ?? 'Something went wrong!')
+    }
+  }
 
   return (
-    <>
-      <Modal
-        open={isUserModalOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        position="relative"
+    <Modal
+      open={isUserModalOpen}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      position="relative"
+    >
+      <Box
+        backgroundColor="white"
+        width="80%"
+        maxWidth="500px"
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          borderRadius: '3px'
+        }}
       >
-        <Box
-          backgroundColor="white"
-          width="80%"
-          maxWidth="500px"
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            borderRadius: '3px'
-          }}
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Tabs value={value} onChange={handleTabChange}>
+            <Tab label="SIGN IN" value="signin" />
+            <Tab label="SIGN UP" value="signup" />
+          </Tabs>
+          <IconButton
+            onClick={() => dispatch(setIsUserModalOpen(false))}
+            sx={{ color: 'primary.main', m: '0 20px' }}
           >
-            <Tabs value={value} onChange={handleTabChange}>
-              <Tab label="SIGN IN" value="signin" />
-              <Tab label="SIGN UP" value="signup" />
-            </Tabs>
-            <IconButton
-              onClick={() => dispatch(setIsUserModalOpen(false))}
-              sx={{ color: 'primary.main', m: '0 20px' }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={checkoutSchema[activeForm]}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              setFieldValue
-            }) => (
-              <form onSubmit={handleSubmit}>
-                {value === 'signin' && (
-                  <SignIn
-                    type="signIn"
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    error={error}
-                  />
-                )}
-                {value === 'signup' && (
-                  <SignUp
-                    type="signUp"
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    setActiveForm={setActiveForm}
-                  />
-                )}
-              </form>
-            )}
-          </Formik>
+            <CloseIcon />
+          </IconButton>
         </Box>
-      </Modal>
-
-      {/* IF LOGGED IN - DASHBOARD */}
-
-      {/* TODO:
-        - signa upp 1. success 2. fail
-        - Om inloggad - visa Profile sida med logga ut knapp
-        - Logga ut
-
-        https://strapi.io/blog/strapi-authentication-with-react
-        https://docs.strapi.io/dev-docs/plugins/users-permissions#login
-      */}
-    </>
+        <Formik
+          onSubmit={handleFormSubmit}
+          initialValues={initialValues}
+          validationSchema={checkoutSchema[activeForm]}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            setFieldValue
+          }) => (
+            <form onSubmit={handleSubmit}>
+              {value === 'signin' && (
+                <SignIn
+                  type="signIn"
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                  errorSignIn={errorSignIn}
+                  setValue={setValue}
+                />
+              )}
+              {value === 'signup' && (
+                <SignUp
+                  type="signUp"
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                  errorSignUp={errorSignUp}
+                  setValue={setValue}
+                />
+              )}
+            </form>
+          )}
+        </Formik>
+      </Box>
+    </Modal>
   )
 }
 

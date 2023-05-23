@@ -8,7 +8,8 @@ const SignIn = ({
   touched,
   handleBlur,
   handleChange,
-  error
+  errorSignIn,
+  setValue
 }) => {
   //these funtions allow for better code readability
   const formattedName = (field) => `${type}.${field}`
@@ -50,9 +51,9 @@ const SignIn = ({
         helperText={formattedHelper('password')}
         sx={{ marginBottom: '15px' }}
       />
-      {error ? (
-        <Box component="span" fontSize="14px" paddingBottom="15px" color="red">
-          Invalid email address or password
+      {errorSignIn ? (
+        <Box fontSize="14px" mb="15px" color="red">
+          {errorSignIn}
         </Box>
       ) : (
         ''
@@ -65,10 +66,6 @@ const SignIn = ({
           minWidth: '100%',
           padding: '20px 40px',
           mb: '15px'
-        }}
-        onClick={() => {
-          //navigate('/checkout')
-          //dispatch(setIsCartOpen({}))
         }}
       >
         Sign in
@@ -91,6 +88,7 @@ const SignIn = ({
           component="span"
           fontWeight="bold"
           sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => setValue('signup')}
         >
           Sign up
         </Box>
