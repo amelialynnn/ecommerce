@@ -3,7 +3,7 @@ import React from 'react'
 const Profile = () => {
   return (
     <div>
-      Logged in - User Profile
+      Welcome, USERNAME!
       <p>{/* message.success(`Welcome back ${data.user.username}!`) */}</p>
       {/* Logg out --> Navigate to homescreen */}
       {/* // call this function to sign out logged in user

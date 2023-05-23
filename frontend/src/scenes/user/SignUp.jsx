@@ -88,7 +88,14 @@ const SignUp = ({
         policy.
       </Typography>
       <Typography sx={{ textAlign: 'center' }}>
-        Already have an account? Sign in
+        Already have an account?{' '}
+        <Box
+          component="span"
+          fontWeight="bold"
+          sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+        >
+          Sign in
+        </Box>
       </Typography>
     </Box>
   )

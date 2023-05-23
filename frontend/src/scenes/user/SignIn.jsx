@@ -7,7 +7,8 @@ const SignIn = ({
   errors,
   touched,
   handleBlur,
-  handleChange
+  handleChange,
+  error
 }) => {
   //these funtions allow for better code readability
   const formattedName = (field) => `${type}.${field}`
@@ -19,6 +20,7 @@ const SignIn = ({
 
   const formattedHelper = (field) =>
     getIn(touched, formattedName(field)) && getIn(errors, formattedName(field))
+
   return (
     <Box m="20px">
       <Typography id="modal-modal-title" variant="h6" component="h2" mb="10px">
@@ -48,6 +50,13 @@ const SignIn = ({
         helperText={formattedHelper('password')}
         sx={{ marginBottom: '15px' }}
       />
+      {error ? (
+        <Box component="span" fontSize="14px" paddingBottom="15px" color="red">
+          Invalid email address or password
+        </Box>
+      ) : (
+        ''
+      )}
       <Button
         type="submit"
         variant="btnPrimary"
@@ -66,14 +75,25 @@ const SignIn = ({
       </Button>
       <Typography
         id="modal-modal-description"
-        sx={{ textAlign: 'center', fontSize: '12px', mb: '15px' }}
+        sx={{
+          textAlign: 'center',
+          fontSize: '12px',
+          mb: '15px',
+          textDecoration: 'underline',
+          cursor: 'pointer'
+        }}
       >
-        By creating an account, you agree to Yogi's membership terms. You can
-        find information about our handling of personal data in our privacy
-        policy.
+        Forgot password?
       </Typography>
       <Typography sx={{ textAlign: 'center' }}>
-        Don't have an account? Sign up
+        Don't have an account?{' '}
+        <Box
+          component="span"
+          fontWeight="bold"
+          sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+        >
+          Sign up
+        </Box>
       </Typography>
     </Box>
   )

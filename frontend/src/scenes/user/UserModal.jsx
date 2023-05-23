@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
@@ -61,6 +61,13 @@ const UserModal = () => {
 
   const isUserModalOpen = useSelector((state) => state.user.isUserModalOpen)
 
+  useEffect(() => {
+    //reset error message when user modal is closed
+    if (!isUserModalOpen) {
+      setError('')
+    }
+  })
+
   const handleTabChange = (event, newValue) => {
     setValue(newValue)
 
@@ -71,15 +78,13 @@ const UserModal = () => {
     }
   }
 
-  const handleFormSubmit = async (values, { resetForm }) => {
+  const handleFormSubmit = async (values, actions) => {
     if (isSignInForm) {
-      console.log('SignIn values', values.signIn)
       signIn(values)
     } else if (isSignUpForm) {
       console.log('SignUp values', values.signUp)
       signUp(values)
     }
-    resetForm()
   }
 
   //SIGN IN
@@ -104,13 +109,11 @@ const UserModal = () => {
       if (data?.error) {
         throw data?.error
       } else {
-        //set the token
+        //local storage
         setToken(data.jwt)
-
-        //set as logged in
         setLoggedIn(true)
 
-        //set the user
+        //set the user in redux store
         dispatch(setUser(data.user))
 
         //close user modal
@@ -187,6 +190,7 @@ const UserModal = () => {
                     handleBlur={handleBlur}
                     handleChange={handleChange}
                     setFieldValue={setFieldValue}
+                    error={error}
                   />
                 )}
                 {value === 'signup' && (
@@ -198,6 +202,7 @@ const UserModal = () => {
                     handleBlur={handleBlur}
                     handleChange={handleChange}
                     setFieldValue={setFieldValue}
+                    setActiveForm={setActiveForm}
                   />
                 )}
               </form>
@@ -209,10 +214,12 @@ const UserModal = () => {
       {/* IF LOGGED IN - DASHBOARD */}
 
       {/* TODO:
-        - logga in 1. success 2. fail
         - signa upp 1. success 2. fail
-        - Om inloggad - visa Profile sida
+        - Om inloggad - visa Profile sida med logga ut knapp
         - Logga ut
+
+        https://strapi.io/blog/strapi-authentication-with-react
+        https://docs.strapi.io/dev-docs/plugins/users-permissions#login
       */}
     </>
   )
