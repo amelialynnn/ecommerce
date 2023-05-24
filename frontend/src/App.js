@@ -1,11 +1,5 @@
 import { useEffect } from 'react'
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-  Outlet
-} from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 
 // page & layout imports
 import Home from './scenes/home/Home'
@@ -13,13 +7,15 @@ import ItemDetails from './scenes/itemDetails/ItemDetails'
 import ItemsCollection from './scenes/collection/ItemsCollection'
 import Checkout from './scenes/checkout/Checkout'
 import Confirmation from './scenes/checkout/Confirmation'
-import Navbar from './scenes/global/Navbar'
-import Infobar from './scenes/global/Infobar'
 import CartMenu from './scenes/global/CartMenu'
 import NavMenu from './scenes/global/NavMenu'
 import Profile from './scenes/user/Profile'
 import UserModal from './scenes/user/UserModal'
-import Footer from './scenes/global/Footer'
+
+// routing
+import ProtectedRoute from './routing/ProtectedRoute'
+import MainLayout from './routing/MainLayout'
+import SuccessLayout from './routing/SuccessLayout'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation()
@@ -31,26 +27,6 @@ const ScrollToTop = () => {
   return null
 }
 
-const MainLayout = () => (
-  <>
-    <Infobar />
-    <Navbar />
-    <main>
-      <Outlet />
-    </main>
-    <Footer />
-  </>
-)
-
-const SuccessLayout = () => (
-  <>
-    <main>
-      <Outlet />
-    </main>
-    <Footer />
-  </>
-)
-
 function App() {
   return (
     <div className="app">
@@ -61,7 +37,9 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="item/:itemId" element={<ItemDetails />}></Route>
             <Route path="collection" element={<ItemsCollection />}></Route>
-            <Route path="profile" element={<Profile />}></Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="profile" element={<Profile />} />
+            </Route>
           </Route>
           <Route path="checkout" element={<Checkout />}></Route>
           <Route element={<SuccessLayout />}>
