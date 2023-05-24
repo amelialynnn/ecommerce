@@ -8,6 +8,7 @@ import { shades } from '../theme'
 import { useTheme } from '@mui/material'
 import { addToCart } from '../state'
 import { useNavigate } from 'react-router-dom'
+import { URL_BASE } from '../constant'
 
 const Item = ({ item, width }) => {
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ const Item = ({ item, width }) => {
           alt={item.name}
           width="300px"
           height="300px"
-          src={`http://localhost:1337${url}`}
+          src={`${URL_BASE}${url}`}
           onClick={() => navigate(`/item/${item.id}`)}
         />
         <Box

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import { setIsUserModalOpen, setUser } from '../../state'
-import { API } from '../../constant'
+import { setIsUserModalOpen } from '../../state'
+import { URL_BASE } from '../../constant'
 import { setToken, setLoggedIn } from '../../helpers'
 import SignUp from './SignUp'
 import SignIn from './SignIn'
@@ -88,7 +88,7 @@ const UserModal = () => {
         password: values.signIn.password
       }
 
-      const response = await fetch(`${API}/auth/local`, {
+      const response = await fetch(`${URL_BASE}/api/auth/local`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -104,9 +104,6 @@ const UserModal = () => {
         //local storage
         setToken(data.jwt)
         setLoggedIn(true)
-
-        //set the user in redux store
-        dispatch(setUser(data.user))
 
         //close user modal
         dispatch(setIsUserModalOpen(false))
@@ -128,7 +125,7 @@ const UserModal = () => {
         password: values.signUp.password
       }
 
-      const response = await fetch(`${API}/auth/local/register`, {
+      const response = await fetch(`${URL_BASE}/api/auth/local/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -144,9 +141,6 @@ const UserModal = () => {
         //local storage
         setToken(data.jwt)
         setLoggedIn(true)
-
-        //set the user in redux store
-        dispatch(setUser(data.user))
 
         //close user modal
         dispatch(setIsUserModalOpen(false))

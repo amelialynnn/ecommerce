@@ -1,12 +1,5 @@
 import { createSlice, combineReducers } from '@reduxjs/toolkit'
 
-/* const initialState = {
-  isCartOpen: false,
-  cart: [],
-  items: [],
-  //isMenuOpen: false
-}
- */
 export const cartSlice = createSlice({
   name: 'cart',
   initialState: { isCartOpen: false, cart: [], items: [] },
@@ -80,23 +73,8 @@ export const userSlice = createSlice({
 
 export const { setIsUserModalOpen } = userSlice.actions
 
-export const authSlice = createSlice({
-  name: 'auth',
-  initialState: {
-    user: undefined
-  },
-  reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload
-    }
-  }
-})
-
-export const { setUser } = authSlice.actions
-
 export default combineReducers({
   cart: cartSlice.reducer,
   menu: menuSlice.reducer,
-  user: userSlice.reducer,
-  auth: authSlice.reducer
+  user: userSlice.reducer
 })
