@@ -10,7 +10,6 @@ const InfoBar = () => {
       padding="10px 0"
       fontFamily="fontFamily"
       fontSize="14px"
-      position="relative"
       zIndex={5}
     >
       Free shipping & free returns on every order

@@ -8,7 +8,6 @@ import ItemsCollection from './scenes/collection/ItemsCollection'
 import Checkout from './scenes/checkout/Checkout'
 import Confirmation from './scenes/checkout/Confirmation'
 import CartMenu from './scenes/global/CartMenu'
-import NavMenu from './scenes/global/NavMenu'
 import Profile from './scenes/user/Profile'
 import UserModal from './scenes/user/UserModal'
 
@@ -47,7 +46,6 @@ function App() {
           </Route>
         </Routes>
         <CartMenu />
-        <NavMenu />
         <UserModal />
       </BrowserRouter>
     </div>

@@ -20,14 +20,14 @@ const NavMenu = () => {
       backgroundColor="white"
       width="90%"
       maxWidth="1000px"
-      paddingTop="133px"
-      position="fixed"
-      zIndex={3}
-      top="0"
+      position="absolute"
+      top="92px"
       left="50%"
       sx={{
         transform: 'translateX(-50%)'
       }}
+      zIndex={3}
+      boxShadow="rgba(99, 99, 99, 0.2) 0 6px 8px 0"
       onMouseOver={() => dispatch(setIsMenuOpen(true))}
       onMouseOut={() => dispatch(setIsMenuOpen(false))}
     >

@@ -12,6 +12,8 @@ import { shades } from '../../theme'
 import { setIsCartOpen, setIsMenuOpen, setIsUserModalOpen } from '../../state'
 import { getIsLoggedIn } from '../../helpers'
 
+import NavMenu from './NavMenu'
+
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -39,7 +41,8 @@ const Navbar = () => {
       position="sticky"
       top="0"
       left="0"
-      zIndex={5}
+      zIndex={3}
+      boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
     >
       <Box
         width="80%"
@@ -75,6 +78,7 @@ const Navbar = () => {
             <ExpandMore fontSize="large" />
           )}
         </Box>
+        <NavMenu />
         <Box display="flex" justifyContent="space-between" columnGap="5px">
           <IconButton onClick={handleUser} sx={{ color: 'primary.main' }}>
             <Person />
