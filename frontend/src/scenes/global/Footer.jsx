@@ -10,6 +10,7 @@ const Footer = () => {
     <Box mt="70px" p="40px 0" backgroundColor={secondary.main}>
       <Box
         width="80%"
+        maxWidth="1600px"
         margin="auto"
         display="flex"
         justifyContent="space-between"

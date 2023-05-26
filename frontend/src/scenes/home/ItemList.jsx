@@ -22,7 +22,7 @@ const ItemList = () => {
   }, [])
 
   return (
-    <Box width="80%" margin="80px auto">
+    <Box width="80%" maxWidth="1500px" margin="80px auto">
       <Typography
         variant="smallHeading"
         component="h2"

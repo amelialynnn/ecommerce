@@ -44,6 +44,7 @@ const Navbar = () => {
     >
       <Box
         width="80%"
+        maxWidth="1600px"
         height="100%"
         margin="auto"
         display="flex"
