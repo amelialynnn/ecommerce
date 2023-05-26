@@ -27,14 +27,20 @@ const NavMenu = () => {
         transform: 'translateX(-50%)'
       }}
       zIndex={3}
-      boxShadow="rgba(99, 99, 99, 0.2) 0 6px 8px 0"
+      boxShadow="rgba(99, 99, 99, 0.2) 0 8px 8px 0"
       onMouseOver={() => dispatch(setIsMenuOpen(true))}
       onMouseOut={() => dispatch(setIsMenuOpen(false))}
     >
-      <Box display="flex" height="auto" sx={{ cursor: 'pointer' }}>
+      <Box
+        component="ol"
+        display="flex"
+        height="auto"
+        sx={{ cursor: 'pointer' }}
+      >
         {bestSellers?.map((item) => {
           return (
             <Box
+              component="li"
               display="flex"
               flexDirection="column"
               justifyContent="start"

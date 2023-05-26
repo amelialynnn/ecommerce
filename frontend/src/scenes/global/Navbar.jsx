@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge, Box, IconButton } from '@mui/material'
+import { Badge, Box, IconButton, Typography } from '@mui/material'
 import {
   Person,
   ShoppingCart,
@@ -32,12 +32,10 @@ const Navbar = () => {
 
   return (
     <Box
-      display="flex"
-      alignItems="center"
       width="100%"
+      height="92px"
       backgroundColor="white"
       color={shades.primary[500]}
-      padding="10px"
       position="sticky"
       top="0"
       left="0"
@@ -46,6 +44,7 @@ const Navbar = () => {
     >
       <Box
         width="80%"
+        height="100%"
         margin="auto"
         display="flex"
         justifyContent="space-between"
@@ -62,16 +61,20 @@ const Navbar = () => {
         </Box>
         <Box
           onMouseOver={() => dispatch(setIsMenuOpen(true))}
+          onMouseOut={() => dispatch(setIsMenuOpen(false))}
           onClick={() => {
             navigate('/collection')
             dispatch(setIsMenuOpen(false))
           }}
           component="nav"
           display="flex"
+          justifyContent="center"
           alignItems="center"
+          height="100%"
+          width="30%"
           sx={{ '&:hover': { cursor: 'pointer' } }}
         >
-          Products{' '}
+          <Typography component="a">Products </Typography>
           {IsMenuOpen ? (
             <ExpandLess fontSize="large" />
           ) : (
