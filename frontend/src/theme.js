@@ -93,6 +93,7 @@ export const theme = createTheme({
             color: 'white',
             borderRadius: 5,
             padding: '20px 40px',
+            maxHeight: '68px',
             fontFamily: ['Open Sans', 'san-serif'].join(','),
             fontSize: 16,
             fontWeight: '500'

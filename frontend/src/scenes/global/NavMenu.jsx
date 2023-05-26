@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Typography, useTheme } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
-import { setIsMenuOpen } from '../../state'
+import { setIsMenuOpen, setItems } from '../../state'
 import { useNavigate } from 'react-router-dom'
 
 const NavMenu = () => {
   const navigate = useNavigate()
-  const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
-  const bestSellers = useSelector((state) => state.cart.items)?.slice(0, 3)
   const dispatch = useDispatch()
 
   const {
     palette: { secondary }
   } = useTheme()
+
+  const items = useSelector((state) => state.cart.items)?.slice(0, 3)
+  const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
+
+  async function getItems() {
+    const items = await fetch(
+      'http://localhost:1337/api/items?populate=image',
+      { method: 'GET' }
+    )
+    const itemsJson = await items.json()
+    dispatch(setItems(itemsJson.data))
+  }
+
+  useEffect(() => {
+    getItems() // eslint-disable-next-line
+  }, [])
 
   return (
     <Box
@@ -37,7 +51,7 @@ const NavMenu = () => {
         height="auto"
         sx={{ cursor: 'pointer' }}
       >
-        {bestSellers?.map((item) => {
+        {items?.map((item) => {
           return (
             <Box
               component="li"

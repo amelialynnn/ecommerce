@@ -1,4 +1,3 @@
-//ShoppingList.jsx i exempel
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
@@ -8,7 +7,6 @@ import { setItems } from '../../state'
 const ItemList = () => {
   const dispatch = useDispatch()
   const items = useSelector((state) => state.cart.items)
-  console.log('items:', items)
 
   async function getItems() {
     const items = await fetch(
