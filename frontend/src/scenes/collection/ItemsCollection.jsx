@@ -9,8 +9,7 @@ const ItemsCollection = () => {
   const dispatch = useDispatch()
   const items = useSelector((state) => state.cart.items)
 
-  const tablet = useMediaQuery('(min-width:600px)')
-  const isNonMobile = useMediaQuery('(min-width:1550px)')
+  const isNonMobile = useMediaQuery('(min-width:600px)')
 
   async function getItems() {
     const items = await fetch(`${URL_BASE}/api/items?populate=image`, {
@@ -25,7 +24,7 @@ const ItemsCollection = () => {
   }, [])
 
   return (
-    <Box margin="80px auto">
+    <Box margin="80px auto" maxWidth="1500px">
       <Typography variant="h2" component="h3" textAlign="center" mb="30px">
         Our Best Sellers
       </Typography>
@@ -36,22 +35,18 @@ const ItemsCollection = () => {
         rowGap="40px"
         columnGap="40px"
         sx={{
-          '&': isNonMobile
-            ? {
-                gridTemplateColumns: 'repeat(2, 700px)'
-              }
-            : tablet
-            ? {
-                gridTemplateColumns: 'repeat(2, 45%)'
-              }
-            : { gridTemplateColumns: '1fr' }
+          '&': {
+            gridTemplateColumns: isNonMobile
+              ? 'repeat(2, 1fr)'
+              : 'repeat(auto, 1fr)'
+          }
         }}
       >
-        {items.slice(0, 2)?.map((item) => (
+        {items?.slice(0, 2).map((item) => (
           <Box margin="0 auto">
             <ItemBestSellers
               item={item}
-              maxWidth="700px"
+              maxWidth="660px"
               key={`${item.attributes.name}-${item.id}`}
             />
           </Box>

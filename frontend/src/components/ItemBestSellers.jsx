@@ -18,8 +18,8 @@ const ItemBestSellers = ({ item, maxWidth }) => {
   } = image
 
   return (
-    <Box maxWidth={maxWidth}>
-      <Box>
+    <Box>
+      <Box maxWidth={maxWidth}>
         <img
           alt={item.name}
           width="100%"
