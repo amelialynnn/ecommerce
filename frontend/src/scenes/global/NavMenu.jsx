@@ -3,6 +3,7 @@ import { Box, Typography, useTheme } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { setIsMenuOpen, setItems } from '../../state'
 import { useNavigate } from 'react-router-dom'
+import { URL_BASE } from '../../constant'
 
 const NavMenu = () => {
   const navigate = useNavigate()
@@ -16,10 +17,9 @@ const NavMenu = () => {
   const IsMenuOpen = useSelector((state) => state.menu.isMenuOpen)
 
   async function getItems() {
-    const items = await fetch(
-      'http://localhost:1337/api/items?populate=image',
-      { method: 'GET' }
-    )
+    const items = await fetch(`${URL_BASE}/api/items?populate=image`, {
+      method: 'GET'
+    })
     const itemsJson = await items.json()
     dispatch(setItems(itemsJson.data))
   }
@@ -67,7 +67,7 @@ const NavMenu = () => {
               key={`${item.attributes.name}-${item.id}`}
             >
               <img
-                src={`http://localhost:1337${item.attributes.image.data.attributes.formats.medium.url}`}
+                src={`${URL_BASE}${item.attributes.image.data.attributes.formats.medium.url}`}
                 alt={item.attributes.name}
                 width="80%"
                 height="auto"

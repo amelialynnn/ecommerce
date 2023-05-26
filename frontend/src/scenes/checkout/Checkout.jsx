@@ -7,6 +7,7 @@ import Shipping from './Shipping'
 import Payment from './Payment'
 import { shades } from '../../theme'
 import { loadStripe } from '@stripe/stripe-js'
+import { URL_BASE } from '../../constant'
 
 const stripePromise = loadStripe(
   'pk_test_51N81Z0CtShirwDcZ6bqLaJCimWN9CmHc6NeNTL6XhAj6iOO9tXAn6qtEkC9nEjGai13MFUZqC9dpTUrZGPyS1sld00kEJKL8AZ'
@@ -124,7 +125,7 @@ const Checkout = () => {
       }))
     }
 
-    const response = await fetch('http://localhost:1337/api/orders', {
+    const response = await fetch(`${URL_BASE}/api/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)

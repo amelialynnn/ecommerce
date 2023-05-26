@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ItemBestSellers from '../../components/ItemBestSellers'
 import { setItems } from '../../state'
 import { Box, Typography, useMediaQuery } from '@mui/material'
+import { URL_BASE } from '../../constant'
 
 const ItemsCollection = () => {
   const dispatch = useDispatch()
@@ -12,10 +13,9 @@ const ItemsCollection = () => {
   const isNonMobile = useMediaQuery('(min-width:1550px)')
 
   async function getItems() {
-    const items = await fetch(
-      'http://localhost:1337/api/items?populate=image',
-      { method: 'GET' }
-    )
+    const items = await fetch(`${URL_BASE}/api/items?populate=image`, {
+      method: 'GET'
+    })
     const itemsJson = await items.json()
     dispatch(setItems(itemsJson.data))
   }

@@ -8,6 +8,7 @@ import { shades } from '../../theme'
 import { addToCart } from '../../state'
 import { useParams } from 'react-router-dom'
 import Item from '../../components/Item'
+import { URL_BASE } from '../../constant'
 
 const ItemDetails = () => {
   const dispatch = useDispatch()
@@ -22,19 +23,17 @@ const ItemDetails = () => {
   }
 
   async function getItem() {
-    const item = await fetch(
-      `http://localhost:1337/api/items/${itemId}?populate=image`,
-      { method: 'GET' }
-    )
+    const item = await fetch(`${URL_BASE}/api/items/${itemId}?populate=image`, {
+      method: 'GET'
+    })
     const itemJson = await item.json()
     setItem(itemJson.data)
   }
 
   async function getItems() {
-    const items = await fetch(
-      'http://localhost:1337/api/items?populate=image',
-      { method: 'GET' }
-    )
+    const items = await fetch(`${URL_BASE}/api/items?populate=image`, {
+      method: 'GET'
+    })
     const itemsJson = await items.json()
     setItems(itemsJson.data)
   }
@@ -53,7 +52,7 @@ const ItemDetails = () => {
             alt={item?.name}
             width="100%"
             height="100%"
-            src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
+            src={`${URL_BASE}${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
             style={{ objectFit: 'contain' }}
           />
         </Box>

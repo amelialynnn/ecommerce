@@ -41,8 +41,8 @@ const Item = ({ item, width }) => {
       >
         <img
           alt={item.name}
-          width="300px"
-          height="300px"
+          width="350px"
+          height="350px"
           src={`${URL_BASE}${url}`}
           onClick={() => navigate(`/item/${item.id}`)}
         />
